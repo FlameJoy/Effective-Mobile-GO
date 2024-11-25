@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"songLibrary/initializers"
 	"songLibrary/models"
@@ -82,7 +83,7 @@ func (h *Handler) AddSong(c echo.Context) error {
 
 			log.Info("Песня не найдена, делаем запрос к внешнему API") // Info-лог
 
-			apiURL := fmt.Sprintf("%s/info?group=%s&song=%s", os.Getenv("EXTERNAL_API_ADDR"), input.Group, input.Song)
+			apiURL := fmt.Sprintf("%s/info?group=%s&song=%s", os.Getenv("EXTERNAL_API_ADDR"), url.QueryEscape(input.Group), url.QueryEscape(input.Song))
 			resp, err := http.Get(apiURL)
 			if err != nil {
 
