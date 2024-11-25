@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "2ed72389-c65e-45b3-b5e6-3f3cb890608a",
+		"name": "songLib",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37418501"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/library/songs/add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"group\": \"Lady Gaga\",\r\n \"song\": \"Dance dance\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/library/songs/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"library",
+						"songs",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/library/songs/delete/44",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/library/songs/delete/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"library",
+						"songs",
+						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/library/songs/4/lyrics?page=1&limit=10",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/library/songs/1/lyrics?page=1&limit=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"library",
+						"songs",
+						"1",
+						"lyrics"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/library/songs/edit/4",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"New Song Title\",\r\n    \"release_date\": \"20.12.2024\",\r\n    \"link\": \"https://www.youtube.com/watch?v=NewSongLink\",\r\n    \"group_name\": \"New Group Name\", // Имя группы, если оно изменяется\r\n    \"lyrics\": [\r\n        {\r\n            \"id\": 1, // ID лирики, если она существует\r\n            \"verse\": \"New first verse\",\r\n            \"order\": 1 // Порядок лирики\r\n        },\r\n        {\r\n            \"id\": 2, // ID лирики, если она существует\r\n            \"verse\": \"New second verse\",\r\n            \"order\": 2 // Порядок лирики\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/library/songs/edit/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"library",
+						"songs",
+						"edit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/library/songs?group_name=The%20Beatles&song_title=Hey%20Jude&release_date=1968-08-26&link=https://www.youtube.com&lyrics=take%20a%20sad%20song&limit=10&page=1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/library/songs?release_date=16.07.2006&limit=10&page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"library",
+						"songs"
+					],
+					"query": [
+						{
+							"key": "group_name",
+							"value": "fall o",
+							"disabled": true
+						},
+						{
+							"key": "song_title",
+							"value": "New Song Title",
+							"disabled": true
+						},
+						{
+							"key": "release_date",
+							"value": "16.07.2006"
+						},
+						{
+							"key": "link",
+							"value": "https://www.youtube.com",
+							"disabled": true
+						},
+						{
+							"key": "lyrics",
+							"value": "take%20a%20sad%20song",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

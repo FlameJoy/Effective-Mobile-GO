@@ -1,0 +1,305 @@
+basePath: /api/v1
+definitions:
+  models.Edit:
+    properties:
+      group_name:
+        example: Fall Out Boys
+        type: string
+      link:
+        example: https://www.youtube.com/watch?v=LBr7kECsjcQ
+        type: string
+      lyrics:
+        items:
+          $ref: '#/definitions/models.Lyrics'
+        type: array
+      release_date:
+        example: 01.01.2019
+        type: string
+      title:
+        example: Centuries
+        type: string
+    type: object
+  models.Input:
+    properties:
+      group:
+        example: Fall Out Boys
+        type: string
+      song:
+        example: Centuries
+        type: string
+    type: object
+  models.Lyrics:
+    properties:
+      created_at:
+        example: 2024-11-23 18:55:28.896205+03
+        type: string
+      id:
+        example: 1
+        type: integer
+      order:
+        example: 1
+        type: integer
+      song_id:
+        example: 1
+        type: integer
+      updated_at:
+        example: 2024-11-23 18:55:28.896205+03
+        type: string
+      verse:
+        example: Some legends are told
+        type: string
+    type: object
+  models.Song:
+    properties:
+      created_at:
+        example: 2024-11-23 18:55:28.896205+03
+        type: string
+      group_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      link:
+        example: https://www.youtube.com/watch?v=LBr7kECsjcQ
+        type: string
+      lyrics:
+        items:
+          $ref: '#/definitions/models.Lyrics'
+        type: array
+      release_date:
+        example: 01.01.2019
+        type: string
+      title:
+        example: Centuries
+        type: string
+      updated_at:
+        example: 2024-11-23 18:55:28.896205+03
+        type: string
+    type: object
+  models.SongsList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Song'
+        type: array
+      limit:
+        example: 10
+        type: integer
+      page:
+        example: 1
+        type: integer
+      total_count:
+        example: 100
+        type: integer
+    type: object
+  utils.ProblemDetails:
+    properties:
+      detail:
+        example: описание ошибки
+        type: string
+      method:
+        example: POST
+        type: string
+      status_code:
+        example: 400
+        type: integer
+      time:
+        example: "2024-11-24 19:33:57"
+        type: string
+      title:
+        example: DB error
+        type: string
+      type:
+        example: /api/v1/...
+        type: string
+    type: object
+  utils.RespOK:
+    properties:
+      message:
+        example: Запрос успешно выполнен
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Song library API by Ilya Valentuikevich
+  title: songLibraryAPI
+  version: "1.0"
+paths:
+  /api/v1/library/songs:
+    get:
+      description: '**Получения списка песен**'
+      parameters:
+      - description: Название группы
+        in: query
+        name: groupName
+        type: string
+      - description: Название песни
+        in: query
+        name: songTitle
+        type: string
+      - description: Дата выпуска песни
+        in: query
+        name: releaseDate
+        type: string
+      - description: Ссылка на песню
+        in: query
+        name: link
+        type: string
+      - description: Фрагмент текста песни
+        in: query
+        name: lyrics
+        type: string
+      - description: Страница
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: Ограничение вывода
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            $ref: '#/definitions/models.SongsList'
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+      summary: Получения списка песен
+      tags:
+      - Song
+  /api/v1/library/songs/:id/lyrics:
+    get:
+      description: '**Получение текста песни**'
+      parameters:
+      - description: Страница
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: Ограничение вывода
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            items:
+              $ref: '#/definitions/models.Lyrics'
+            type: array
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+      summary: Получение текста песни
+      tags:
+      - Song
+  /api/v1/library/songs/add:
+    post:
+      consumes:
+      - application/json
+      description: '**Добавить песню**'
+      parameters:
+      - description: Информация о песне
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Input'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            $ref: '#/definitions/utils.RespOK'
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "409":
+          description: Песня уже существует
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+      summary: Добавить песню
+      tags:
+      - Song
+  /api/v1/library/songs/delete/:id:
+    delete:
+      description: '**Удаление песни**'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            $ref: '#/definitions/utils.RespOK'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+      summary: Удаление песни
+      tags:
+      - Song
+  /api/v1/library/songs/edit/:id:
+    put:
+      consumes:
+      - application/json
+      description: '**Редактирование данных песни, текста**'
+      parameters:
+      - description: Новая информация о песне
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Edit'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            $ref: '#/definitions/models.Song'
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "404":
+          description: песня не найдена
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ProblemDetails'
+      summary: Редактирование песни
+      tags:
+      - Song
+swagger: "2.0"

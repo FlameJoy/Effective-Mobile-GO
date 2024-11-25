@@ -1,0 +1,4 @@
+# Files
+# *.exe
+*.exe~
+*.env
